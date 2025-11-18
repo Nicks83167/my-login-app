@@ -1,0 +1,24 @@
+{
+  "name": "my-login-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nicks83167/my-login-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Nicks83167/my-login-app/issues"
+  },
+  "homepage": "https://github.com/Nicks83167/my-login-app#readme",
+  "dependencies": {
+    "mongodb": "^7.0.0"
+  }
+}

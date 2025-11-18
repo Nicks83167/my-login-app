@@ -1,29 +1,44 @@
-export default function handler(req, res) {
-  // Allow requests from your frontend
+import { connectToDatabase } from './db.js';
+
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
-  // Handle preflight request
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
   
-  // Handle POST request
   if (req.method === 'POST') {
-    const { username, password } = req.body;
-    
-    // Check credentials
-    if (username === "admin" && password === "admin123") {
-      res.status(200).json({ 
-        success: true, 
-        message: "Login successful!" 
-      });
-    } else {
-      res.status(401).json({ 
+    try {
+      const { username, password } = req.body;
+      
+      // Connect to database
+      const db = await connectToDatabase();
+      const usersCollection = db.collection('users');
+      
+      // Find user
+      const user = await usersCollection.findOne({ username, password });
+      
+      if (user) {
+        res.status(200).json({ 
+          success: true, 
+          message: "Login successful!",
+          user: { username: user.username, email: user.email }
+        });
+      } else {
+        res.status(401).json({ 
+          success: false, 
+          message: "Invalid credentials" 
+        });
+      }
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).json({ 
         success: false, 
-        message: "Invalid credentials" 
+        message: "Server error" 
       });
     }
   } else {
